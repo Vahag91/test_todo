@@ -1,0 +1,10 @@
+.hide::after{
+    display: none;
+}
+
+.hide{
+    width: 60px;
+}
+.icon {
+    position: relative;
+}
