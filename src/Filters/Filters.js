@@ -4,7 +4,7 @@ import styles from "./filters.module.css"
 
 
 
-export default function Filter({ title, name }) {
+export default function Filter({ title, name, onFilterChange,onSortChange }) {
 
 
   return (
@@ -22,6 +22,7 @@ export default function Filter({ title, name }) {
 
           {name.map((item, index) => {
             return <Dropdown.Item
+            onClick={onFilterChange? ()=>onFilterChange(item): ()=>onSortChange(item)}
               key={index}
               href={`#/action-${index + 1}`}>
               {item}

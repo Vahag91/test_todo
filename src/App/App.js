@@ -12,19 +12,55 @@ import Filters from "../Filters"
 export default function App() {
 
 
-    const [items,setItems] = useState([
-        { text: "Buy groceries for next week", important: true, done: false, id: 1 },
-        { text: "Renew car insurance", important: false, done: false, id: 2 },
-        { text: "Sign up for new course", important: false, done: false, id: 3 },
-  ])
+    const [items, setItems] = useState([
+        { text: "Buy groceries for next week", Important: true, Done: false, date: new Date(2021, 2, 4), id: 1 },
+        { text: "Renew car insurance", Important: true, Done: false, date: new Date(2022, 1, 12), id: 2 },
+        { text: "Sign up for new course", Important: false, Done: false, date: new Date(2023, 2, 2), id: 3 },
+    ])
+   const [filter, setFilter] = useState("Important")
 
 
 
-    const filterBtn =  { title: "Sort", name: ["All", "Done", "Important"],id:1 }
-    const sortBtn =  { title: "Filter", name: ["Newest", "Oldest"],id:2 }
-       
+    const sortBtn = { title: "Sort", name: ["Newest", "Oldest"], id: 1 }
+    const filterBtn = { title: "Filter", name: ["All", "Done", "Important"], id: 2 }
+
+
+const onSort=(value, btnName)=>{
     
+   if(btnName === "Newest"){
+    return value.sort((a,b)=>{
+        return a.date - b.date
+    })
+   } else if(btnName==="Oldest") {
+    return value.sort((a,b)=>{
+        return b.date - a.date
+   })
+    
+}}
 
+    const onFilter = (items, btnName) => {
+        switch (btnName) {
+            case 'All':
+                return items;
+            case 'Done':
+                return items.filter((el) => el.Done)
+            case 'Important':
+                return items.filter((el) => el.Important && !el.Done)
+            default:
+                return items
+        }
+    }
+
+    const onFilterChange = (value) => {
+        setFilter(value)
+    }
+    const onSortChange = (btnName) => {
+        const sortedItems = onSort([...items], btnName);
+        setItems(sortedItems);
+      };
+
+
+    const actuallItems = onFilter(items, filter)
 
     return (
         <div className="App">
@@ -32,12 +68,13 @@ export default function App() {
                 <Header />
                 <AddItem />
 
-                 <Container className={styles.filter_container}>
-                  <Filters key={filterBtn.id} title={filterBtn.title} name={filterBtn.name}/>
-                  <Filters key={sortBtn.id} title={sortBtn.title} name={sortBtn.name}/>
-                  </Container>
+                <Container className={styles.filter_container}>
 
-                <TodoList items={items}/>
+                    <Filters title={filterBtn.title} name={filterBtn.name} onFilterChange={onFilterChange} />
+                    <Filters title={sortBtn.title} name={sortBtn.name} onSortChange={onSortChange}/>
+                </Container>
+
+                <TodoList items={actuallItems} />
 
 
             </Container>

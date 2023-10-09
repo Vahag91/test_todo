@@ -1,5 +1,6 @@
 import { Button, InputGroup, Form, Dropdown} from "react-bootstrap"
 import Calendar from "react-calendar"
+import 'react-calendar/dist/Calendar.css'
 import { FaCalendarDays } from "react-icons/fa6"
 import styles from "./add-item.module.css"
 
